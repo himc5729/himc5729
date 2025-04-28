@@ -1,7 +1,7 @@
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 
 local Window = Rayfield:CreateWindow({
-   Name = "himc-hub[재개발]",
+   Name = "himc-hub 1.0[재개발,미완성]",
    Icon = 0, -- Icon in Topbar. Can use Lucide Icons (string) or Roblox Image (number). 0 to use no icon (default).
    LoadingTitle = "잠시만 기다려 주십시오...",
    LoadingSubtitle = "by : himc.5729",
@@ -28,13 +28,13 @@ local Window = Rayfield:CreateWindow({
       Subtitle = "himc-hub key",
       Note = "키는 디스코드에", -- Use this to tell the user how to get a key
       FileName = "Key", -- It is recommended to use something unique as other scripts using Rayfield may overwrite your key file
-      SaveKey = true, -- The user's key will be saved, but if you change the key, they will be unable to use your script
+      SaveKey = false, -- The user's key will be saved, but if you change the key, they will be unable to use your script
       GrabKeyFromSite = false, -- If this is true, set Key below to the RAW site you would like Rayfield to get the key from
       Key = {"응디시티"} -- List of keys that will be accepted by the system, can be RAW file links (pastebin, github etc) or simple strings ("hello","key22")
    }
 })
 
-local Tab = Window:CreateTab("Home", 4483362458) -- Title, Image
+local Tab = Window:CreateTab("🏠Home", nil) -- Title, Image
 
 local Section = Tab:CreateSection("플라이,스피드,점프파워")
 
@@ -69,11 +69,153 @@ local Slider = Tab:CreateSlider({
    end,
 })
 
-local Tab = Window:CreateTab("기본 기능들", 4483362458) -- Title, Image
-
 local Button = Tab:CreateButton({
    Name = "ESP",
    Callback = function()
-   loadstring(game:HttpGet("https://pastebin.com/raw/7K1Jhmck", true))()
+   local FillColor = Color3.fromRGB(175,25,255)
+local DepthMode = "AlwaysOnTop"
+local FillTransparency = 0.5
+local OutlineColor = Color3.fromRGB(255,255,255)
+local OutlineTransparency = 0
+
+local CoreGui = game:FindService("CoreGui")
+local Players = game:FindService("Players")
+local lp = Players.LocalPlayer
+local connections = {}
+
+local Storage = Instance.new("Folder")
+Storage.Parent = CoreGui
+Storage.Name = "Highlight_Storage"
+
+local function Highlight(plr)
+    local Highlight = Instance.new("Highlight")
+    Highlight.Name = plr.Name
+    Highlight.FillColor = FillColor
+    Highlight.DepthMode = DepthMode
+    Highlight.FillTransparency = FillTransparency
+    Highlight.OutlineColor = OutlineColor
+    Highlight.OutlineTransparency = 0
+    Highlight.Parent = Storage
+    
+    local plrchar = plr.Character
+    if plrchar then
+        Highlight.Adornee = plrchar
+    end
+
+    connections[plr] = plr.CharacterAdded:Connect(function(char)
+        Highlight.Adornee = char
+    end)
+end
+
+Players.PlayerAdded:Connect(Highlight)
+for i,v in next, Players:GetPlayers() do
+    Highlight(v)
+end
+
+Players.PlayerRemoving:Connect(function(plr)
+    local plrname = plr.Name
+    if Storage[plrname] then
+        Storage[plrname]:Destroy()
+    end
+    if connections[plr] then
+        connections[plr]:Disconnect()
+    end
+end)
+   end,
+})
+
+local Button = Tab:CreateButton({
+   Name = "무한 점프[J키 눌러야 켜지고, 또J키누르면 꺼짐]",
+   Callback = function()
+   -- Infinite Jump Script (J 키를 눌렀을 때만 작동)
+-- Place this in a LocalScript (StarterPlayerScripts)
+
+local UserInputService = game:GetService("UserInputService")
+local Players = game:GetService("Players")
+
+local player = Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+local humanoid = character:WaitForChild("Humanoid")
+
+-- 무한 점프 활성화 여부
+local infiniteJumpEnabled = false
+
+-- 키 입력 감지
+UserInputService.InputBegan:Connect(function(input, isProcessed)
+    if not isProcessed then
+        if input.KeyCode == Enum.KeyCode.J then
+            infiniteJumpEnabled = not infiniteJumpEnabled  -- 토글
+            print("Infinite Jump: " .. (infiniteJumpEnabled and "ON" or "OFF"))
+        end
+    end
+end)
+
+-- 점프 요청 감지
+UserInputService.JumpRequest:Connect(function()
+    if infiniteJumpEnabled then
+        humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
+    end
+end)
+
+-- 캐릭터가 리스폰하면 다시 humanoid를 찾기
+player.CharacterAdded:Connect(function(newCharacter)
+    character = newCharacter
+    humanoid = character:WaitForChild("Humanoid")
+end)
+   end,
+})
+
+local Tab = Window:CreateTab("게임별 스크립트 모음", 4483362458) -- Title, Image
+
+local Button = Tab:CreateButton({
+   Name = "라이벌",
+   Callback = function()
+   loadstring(game:HttpGet("https://rawscripts.net/raw/XMAS-Blox-Fruits-Blacktrap-Update-Xmas-25207"))()
+   end,
+})
+
+local Button = Tab:CreateButton({
+   Name = "프리즌라이프",
+   Callback = function()
+   loadstring(game:HttpGet("https://raw.githubusercontent.com/tbao143/thaibao/main/TbaohubPrisonLife"))()
+   end,
+})
+
+local Button = Tab:CreateButton({
+   Name = "모든 부대 테러 스크립트 키:12345678",
+   Callback = function()
+   loadstring(game:HttpGet('https://raw.githubusercontent.com/pudong8452/test_case_h/main/Ray_Free'))()
+   end,
+})
+
+local Button = Tab:CreateButton({
+   Name = "배드워즈",
+   Callback = function()
+   loadstring(game:HttpGet("https://raw.githubusercontent.com/vodxn/sape/main/Initiate.lua"))()
+print("Vape V4")
+-- KL 
+   end,
+})
+
+local Button = Tab:CreateButton({
+   Name = "데드레일",
+   Callback = function()
+   loadstring(game:HttpGet("https://zetrax.cc"))()
+   end,
+})
+
+local Tab = Window:CreateTab("개쩌는 스크립트 모음", nil) -- Title, Image
+
+local Button = Tab:CreateButton({
+   Name = "블랙홀 스크립트",
+   Callback = function()
+   loadstring(game:HttpGet("https://pastefy.app/pYhER1z4/raw"))()
+   end,
+})
+
+local Button = Tab:CreateButton({
+   Name = "칼 올킬 스크립트",
+   Callback = function()
+   local range = 1000 local player = game:GetService("Players").LocalPlayer local function isFriendWith(player1, player2) return player1:IsFriendsWith(player2.UserId) end game:GetService("RunService").RenderStepped:Connect(function() local players = game.Players:GetPlayers() for i = 2, #players do local otherPlayer = players[i] local character = otherPlayer.Character if not isFriendWith(player, otherPlayer) then local tool = player.Character and player.Character:FindFirstChildOfClass("Tool") if tool and tool:FindFirstChild("Handle") then tool:Activate() for _, part in next, character:GetChildren() do if part:IsA("BasePart") then firetouchinterest(tool.Handle, part, 0) firetouchinterest(tool.Handle, part, 1) end end end end end end)
    end,
 })
